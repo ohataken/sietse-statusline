@@ -19,6 +19,9 @@ jobs:
       - name: Package (aarch64)
         run: tar -czf sietse-statusline-aarch64-apple-darwin.tar.gz -C target/aarch64-apple-darwin/release sietse-statusline
 
+      - name: SHA256 (aarch64)
+        run: shasum -a 256 sietse-statusline-aarch64-apple-darwin.tar.gz
+
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
