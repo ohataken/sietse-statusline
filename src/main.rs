@@ -1,9 +1,23 @@
 mod output_token;
 mod statusline_payload;
 
+use output_token::OutputToken;
 use statusline_payload::StatuslinePayload;
 use std::io;
 use std::path::Path;
+
+fn parse_args(args: impl Iterator<Item = String>) -> Vec<OutputToken> {
+    args.map(|arg| match arg.as_str() {
+        "--current-dir-name" => OutputToken::CurrentDirName,
+        "--project-dir-name" => OutputToken::ProjectDirName,
+        "--branch-name" => OutputToken::BranchName,
+        other => {
+            eprintln!("unknown argument: {}", other);
+            std::process::exit(1);
+        }
+    })
+    .collect()
+}
 
 fn main() {
     let payload: StatuslinePayload = serde_json::from_reader(io::stdin()).expect("failed to parse JSON");
