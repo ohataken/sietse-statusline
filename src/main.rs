@@ -1,3 +1,4 @@
+mod output_token;
 mod statusline_payload;
 
 use statusline_payload::StatuslinePayload;
