@@ -28,6 +28,11 @@ fn parse_args(args: impl Iterator<Item = String>) -> Vec<OutputToken> {
         "--bright-cyan" => OutputToken::AnsiColor("\x1b[96m"),
         "--bright-white" => OutputToken::AnsiColor("\x1b[97m"),
         "--reset" => OutputToken::AnsiColor("\x1b[0m"),
+        "--space" => OutputToken::Separator(" "),
+        "--comma" => OutputToken::Separator(","),
+        "--slash" => OutputToken::Separator("/"),
+        "--hyphen" => OutputToken::Separator("-"),
+        "--underscore" => OutputToken::Separator("_"),
         other => {
             eprintln!("unknown argument: {}", other);
             std::process::exit(1);
@@ -51,6 +56,7 @@ fn build_output(
                 output.push_str(branch_name.unwrap_or("HEAD"));
             }
             OutputToken::AnsiColor(seq) => output.push_str(seq),
+            OutputToken::Separator(sep) => output.push_str(sep),
         }
     }
     output

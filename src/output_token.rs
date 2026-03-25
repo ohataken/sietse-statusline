@@ -3,4 +3,5 @@ pub enum OutputToken {
     ProjectDirName,
     BranchName,
     AnsiColor(&'static str),
+    Separator(&'static str),
 }
