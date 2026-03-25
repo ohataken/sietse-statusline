@@ -11,6 +11,23 @@ fn parse_args(args: impl Iterator<Item = String>) -> Vec<OutputToken> {
         "--current-dir-name" => OutputToken::CurrentDirName,
         "--project-dir-name" => OutputToken::ProjectDirName,
         "--branch-name" => OutputToken::BranchName,
+        "--black" => OutputToken::AnsiColor("\x1b[30m"),
+        "--red" => OutputToken::AnsiColor("\x1b[31m"),
+        "--green" => OutputToken::AnsiColor("\x1b[32m"),
+        "--yellow" => OutputToken::AnsiColor("\x1b[33m"),
+        "--blue" => OutputToken::AnsiColor("\x1b[34m"),
+        "--magenta" => OutputToken::AnsiColor("\x1b[35m"),
+        "--cyan" => OutputToken::AnsiColor("\x1b[36m"),
+        "--white" => OutputToken::AnsiColor("\x1b[37m"),
+        "--bright-black" => OutputToken::AnsiColor("\x1b[90m"),
+        "--bright-red" => OutputToken::AnsiColor("\x1b[91m"),
+        "--bright-green" => OutputToken::AnsiColor("\x1b[92m"),
+        "--bright-yellow" => OutputToken::AnsiColor("\x1b[93m"),
+        "--bright-blue" => OutputToken::AnsiColor("\x1b[94m"),
+        "--bright-magenta" => OutputToken::AnsiColor("\x1b[95m"),
+        "--bright-cyan" => OutputToken::AnsiColor("\x1b[96m"),
+        "--bright-white" => OutputToken::AnsiColor("\x1b[97m"),
+        "--reset" => OutputToken::AnsiColor("\x1b[0m"),
         other => {
             eprintln!("unknown argument: {}", other);
             std::process::exit(1);
@@ -33,6 +50,7 @@ fn build_output(
             OutputToken::BranchName => {
                 output.push_str(branch_name.unwrap_or("HEAD"));
             }
+            OutputToken::AnsiColor(seq) => output.push_str(seq),
         }
     }
     output
