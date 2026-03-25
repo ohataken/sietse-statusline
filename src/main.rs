@@ -19,6 +19,25 @@ fn parse_args(args: impl Iterator<Item = String>) -> Vec<OutputToken> {
     .collect()
 }
 
+fn build_output(
+    tokens: &[OutputToken],
+    project_dir_name: &str,
+    current_dir_name: &str,
+    branch_name: Option<&str>,
+) -> String {
+    let mut output = String::new();
+    for token in tokens {
+        match token {
+            OutputToken::ProjectDirName => output.push_str(project_dir_name),
+            OutputToken::CurrentDirName => output.push_str(current_dir_name),
+            OutputToken::BranchName => {
+                output.push_str(branch_name.unwrap_or("HEAD"));
+            }
+        }
+    }
+    output
+}
+
 fn main() {
     let payload: StatuslinePayload = serde_json::from_reader(io::stdin()).expect("failed to parse JSON");
     let current_dir = Path::new(&payload.workspace.current_dir);
