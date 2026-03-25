@@ -39,7 +39,9 @@ fn build_output(
 }
 
 fn main() {
-    let payload: StatuslinePayload = serde_json::from_reader(io::stdin()).expect("failed to parse JSON");
+    let args: Vec<String> = std::env::args().collect();
+    let payload: StatuslinePayload =
+        serde_json::from_reader(io::stdin()).expect("failed to parse JSON");
     let current_dir = Path::new(&payload.workspace.current_dir);
     let current_dir_name = current_dir
         .file_name()
@@ -50,8 +52,31 @@ fn main() {
         .file_name()
         .and_then(|n| n.to_str())
         .unwrap_or("");
-    let repo = git2::Repository::discover(&payload.workspace.current_dir).expect("failed to discover repository");
-    let head = repo.head().expect("failed to get HEAD");
-    let branch_name = head.shorthand().unwrap_or("HEAD");
-    println!("{} {} {}", project_dir_name, current_dir_name, branch_name);
+
+    match args.get(1).map(|s| s.as_str()) {
+        Some("claude") => {
+            let tokens = parse_args(args.into_iter().skip(2));
+            let needs_branch = tokens
+                .iter()
+                .any(|t| matches!(t, OutputToken::BranchName));
+            let branch_name = if needs_branch {
+                let repo = git2::Repository::discover(&payload.workspace.current_dir)
+                    .expect("failed to discover repository");
+                let head = repo.head().expect("failed to get HEAD");
+                Some(head.shorthand().unwrap_or("HEAD").to_string())
+            } else {
+                None
+            };
+            let output =
+                build_output(&tokens, project_dir_name, current_dir_name, branch_name.as_deref());
+            println!("{}", output);
+        }
+        _ => {
+            let repo = git2::Repository::discover(&payload.workspace.current_dir)
+                .expect("failed to discover repository");
+            let head = repo.head().expect("failed to get HEAD");
+            let branch_name = head.shorthand().unwrap_or("HEAD");
+            println!("{} {} {}", project_dir_name, current_dir_name, branch_name);
+        }
+    }
 }
