@@ -1,38 +1,38 @@
-mod output_token;
+mod claude_argument_token;
 mod statusline_payload;
 
-use output_token::OutputToken;
+use claude_argument_token::ClaudeArgumentToken;
 use statusline_payload::StatuslinePayload;
 use std::io;
 use std::path::Path;
 
-fn parse_args(args: impl Iterator<Item = String>) -> Vec<OutputToken> {
+fn parse_args(args: impl Iterator<Item = String>) -> Vec<ClaudeArgumentToken> {
     args.map(|arg| match arg.as_str() {
-        "--current-dir-name" => OutputToken::CurrentDirName,
-        "--project-dir-name" => OutputToken::ProjectDirName,
-        "--branch-name" => OutputToken::BranchName,
-        "--black" => OutputToken::AnsiColor("\x1b[30m"),
-        "--red" => OutputToken::AnsiColor("\x1b[31m"),
-        "--green" => OutputToken::AnsiColor("\x1b[32m"),
-        "--yellow" => OutputToken::AnsiColor("\x1b[33m"),
-        "--blue" => OutputToken::AnsiColor("\x1b[34m"),
-        "--magenta" => OutputToken::AnsiColor("\x1b[35m"),
-        "--cyan" => OutputToken::AnsiColor("\x1b[36m"),
-        "--white" => OutputToken::AnsiColor("\x1b[37m"),
-        "--bright-black" => OutputToken::AnsiColor("\x1b[90m"),
-        "--bright-red" => OutputToken::AnsiColor("\x1b[91m"),
-        "--bright-green" => OutputToken::AnsiColor("\x1b[92m"),
-        "--bright-yellow" => OutputToken::AnsiColor("\x1b[93m"),
-        "--bright-blue" => OutputToken::AnsiColor("\x1b[94m"),
-        "--bright-magenta" => OutputToken::AnsiColor("\x1b[95m"),
-        "--bright-cyan" => OutputToken::AnsiColor("\x1b[96m"),
-        "--bright-white" => OutputToken::AnsiColor("\x1b[97m"),
-        "--reset" => OutputToken::AnsiColor("\x1b[0m"),
-        "--space" => OutputToken::Separator(" "),
-        "--comma" => OutputToken::Separator(","),
-        "--slash" => OutputToken::Separator("/"),
-        "--hyphen" => OutputToken::Separator("-"),
-        "--underscore" => OutputToken::Separator("_"),
+        "--current-dir-name" => ClaudeArgumentToken::CurrentDirName,
+        "--project-dir-name" => ClaudeArgumentToken::ProjectDirName,
+        "--branch-name" => ClaudeArgumentToken::BranchName,
+        "--black" => ClaudeArgumentToken::Black,
+        "--red" => ClaudeArgumentToken::Red,
+        "--green" => ClaudeArgumentToken::Green,
+        "--yellow" => ClaudeArgumentToken::Yellow,
+        "--blue" => ClaudeArgumentToken::Blue,
+        "--magenta" => ClaudeArgumentToken::Magenta,
+        "--cyan" => ClaudeArgumentToken::Cyan,
+        "--white" => ClaudeArgumentToken::White,
+        "--bright-black" => ClaudeArgumentToken::BrightBlack,
+        "--bright-red" => ClaudeArgumentToken::BrightRed,
+        "--bright-green" => ClaudeArgumentToken::BrightGreen,
+        "--bright-yellow" => ClaudeArgumentToken::BrightYellow,
+        "--bright-blue" => ClaudeArgumentToken::BrightBlue,
+        "--bright-magenta" => ClaudeArgumentToken::BrightMagenta,
+        "--bright-cyan" => ClaudeArgumentToken::BrightCyan,
+        "--bright-white" => ClaudeArgumentToken::BrightWhite,
+        "--reset" => ClaudeArgumentToken::Reset,
+        "--space" => ClaudeArgumentToken::Space,
+        "--comma" => ClaudeArgumentToken::Comma,
+        "--slash" => ClaudeArgumentToken::Slash,
+        "--hyphen" => ClaudeArgumentToken::Hyphen,
+        "--underscore" => ClaudeArgumentToken::Underscore,
         other => {
             eprintln!("unknown argument: {}", other);
             std::process::exit(1);
@@ -42,7 +42,7 @@ fn parse_args(args: impl Iterator<Item = String>) -> Vec<OutputToken> {
 }
 
 fn build_output(
-    tokens: &[OutputToken],
+    tokens: &[ClaudeArgumentToken],
     project_dir_name: &str,
     current_dir_name: &str,
     branch_name: Option<&str>,
@@ -50,13 +50,33 @@ fn build_output(
     let mut output = String::new();
     for token in tokens {
         match token {
-            OutputToken::ProjectDirName => output.push_str(project_dir_name),
-            OutputToken::CurrentDirName => output.push_str(current_dir_name),
-            OutputToken::BranchName => {
+            ClaudeArgumentToken::ProjectDirName => output.push_str(project_dir_name),
+            ClaudeArgumentToken::CurrentDirName => output.push_str(current_dir_name),
+            ClaudeArgumentToken::BranchName => {
                 output.push_str(branch_name.unwrap_or("HEAD"));
             }
-            OutputToken::AnsiColor(seq) => output.push_str(seq),
-            OutputToken::Separator(sep) => output.push_str(sep),
+            ClaudeArgumentToken::Black => output.push_str("\x1b[30m"),
+            ClaudeArgumentToken::Red => output.push_str("\x1b[31m"),
+            ClaudeArgumentToken::Green => output.push_str("\x1b[32m"),
+            ClaudeArgumentToken::Yellow => output.push_str("\x1b[33m"),
+            ClaudeArgumentToken::Blue => output.push_str("\x1b[34m"),
+            ClaudeArgumentToken::Magenta => output.push_str("\x1b[35m"),
+            ClaudeArgumentToken::Cyan => output.push_str("\x1b[36m"),
+            ClaudeArgumentToken::White => output.push_str("\x1b[37m"),
+            ClaudeArgumentToken::BrightBlack => output.push_str("\x1b[90m"),
+            ClaudeArgumentToken::BrightRed => output.push_str("\x1b[91m"),
+            ClaudeArgumentToken::BrightGreen => output.push_str("\x1b[92m"),
+            ClaudeArgumentToken::BrightYellow => output.push_str("\x1b[93m"),
+            ClaudeArgumentToken::BrightBlue => output.push_str("\x1b[94m"),
+            ClaudeArgumentToken::BrightMagenta => output.push_str("\x1b[95m"),
+            ClaudeArgumentToken::BrightCyan => output.push_str("\x1b[96m"),
+            ClaudeArgumentToken::BrightWhite => output.push_str("\x1b[97m"),
+            ClaudeArgumentToken::Reset => output.push_str("\x1b[0m"),
+            ClaudeArgumentToken::Space => output.push(' '),
+            ClaudeArgumentToken::Comma => output.push(','),
+            ClaudeArgumentToken::Slash => output.push('/'),
+            ClaudeArgumentToken::Hyphen => output.push('-'),
+            ClaudeArgumentToken::Underscore => output.push('_'),
         }
     }
     output
@@ -88,7 +108,7 @@ fn main() {
 
     let needs_branch = tokens
         .iter()
-        .any(|t| matches!(t, OutputToken::BranchName));
+        .any(|t| matches!(t, ClaudeArgumentToken::BranchName));
     let branch_name = if needs_branch {
         let repo = git2::Repository::discover(&payload.workspace.current_dir)
             .expect("failed to discover repository");
