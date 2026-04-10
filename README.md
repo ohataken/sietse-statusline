@@ -1,6 +1,6 @@
 # sietse-statusline
 
-My little statusline for Claude Code / Codex.
+my little statusline for Claude Code / Codex.
 
 ## installation
 
