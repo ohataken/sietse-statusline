@@ -1,3 +1,4 @@
+mod claude_argument_parser;
 mod claude_argument_token;
 mod statusline_payload;
 
@@ -5,41 +6,6 @@ use claude_argument_token::ClaudeArgumentToken;
 use statusline_payload::StatuslinePayload;
 use std::io;
 use std::path::Path;
-
-fn parse_args(args: impl Iterator<Item = String>) -> Vec<ClaudeArgumentToken> {
-    args.map(|arg| match arg.as_str() {
-        "--current-dir-name" => ClaudeArgumentToken::CurrentDirName,
-        "--project-dir-name" => ClaudeArgumentToken::ProjectDirName,
-        "--branch-name" => ClaudeArgumentToken::BranchName,
-        "--black" => ClaudeArgumentToken::Black,
-        "--red" => ClaudeArgumentToken::Red,
-        "--green" => ClaudeArgumentToken::Green,
-        "--yellow" => ClaudeArgumentToken::Yellow,
-        "--blue" => ClaudeArgumentToken::Blue,
-        "--magenta" => ClaudeArgumentToken::Magenta,
-        "--cyan" => ClaudeArgumentToken::Cyan,
-        "--white" => ClaudeArgumentToken::White,
-        "--bright-black" => ClaudeArgumentToken::BrightBlack,
-        "--bright-red" => ClaudeArgumentToken::BrightRed,
-        "--bright-green" => ClaudeArgumentToken::BrightGreen,
-        "--bright-yellow" => ClaudeArgumentToken::BrightYellow,
-        "--bright-blue" => ClaudeArgumentToken::BrightBlue,
-        "--bright-magenta" => ClaudeArgumentToken::BrightMagenta,
-        "--bright-cyan" => ClaudeArgumentToken::BrightCyan,
-        "--bright-white" => ClaudeArgumentToken::BrightWhite,
-        "--reset" => ClaudeArgumentToken::Reset,
-        "--space" => ClaudeArgumentToken::Space,
-        "--comma" => ClaudeArgumentToken::Comma,
-        "--slash" => ClaudeArgumentToken::Slash,
-        "--hyphen" => ClaudeArgumentToken::Hyphen,
-        "--underscore" => ClaudeArgumentToken::Underscore,
-        other => {
-            eprintln!("unknown argument: {}", other);
-            std::process::exit(1);
-        }
-    })
-    .collect()
-}
 
 fn build_output(
     tokens: &[ClaudeArgumentToken],
@@ -98,7 +64,7 @@ fn main() {
         .unwrap_or("");
 
     let tokens = match args.get(1).map(|s| s.as_str()) {
-        Some("claude") => parse_args(args.into_iter().skip(2)),
+        Some("claude") => claude_argument_parser::parse(&args[2..]),
         Some(other) => {
             eprintln!("unknown subcommand: {}", other);
             std::process::exit(1);
