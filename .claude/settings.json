@@ -5,6 +5,7 @@
     "ask": [
     ],
     "allow": [
+      "Bash(cargo build)"
     ]
   }
 }
