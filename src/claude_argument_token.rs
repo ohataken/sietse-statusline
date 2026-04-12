@@ -24,4 +24,5 @@ pub enum ClaudeArgumentToken {
     Slash,
     Hyphen,
     Underscore,
+    Break,
 }

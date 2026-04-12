@@ -28,6 +28,7 @@ pub fn parse(args: &[String]) -> Vec<ClaudeArgumentToken> {
             "--slash" => ClaudeArgumentToken::Slash,
             "--hyphen" => ClaudeArgumentToken::Hyphen,
             "--underscore" => ClaudeArgumentToken::Underscore,
+            "--break" => ClaudeArgumentToken::Break,
             other => {
                 eprintln!("unknown argument: {}", other);
                 std::process::exit(1);
