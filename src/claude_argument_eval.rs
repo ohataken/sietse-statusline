@@ -17,10 +17,14 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
     let repo = git2::Repository::discover(&payload.workspace.current_dir)
         .expect("failed to discover repository");
 
-    let branch_name = {
-        let head = repo.head().expect("failed to get HEAD");
-        head.shorthand().unwrap_or("HEAD").to_string()
-    };
+    let head = repo.head().expect("failed to get HEAD");
+
+    let branch_name = head.shorthand().unwrap_or("HEAD").to_string();
+
+    let branch_head_sha = head
+        .target()
+        .expect("failed to get HEAD target")
+        .to_string();
 
     for token in &tokens {
         match token {
@@ -55,6 +59,7 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
                     print!("worktree");
                 }
             }
+            ClaudeArgumentToken::BranchHeadSha => print!("{}", branch_head_sha),
         }
     }
 }
