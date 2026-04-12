@@ -50,6 +50,11 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
             ClaudeArgumentToken::Hyphen => print!("-"),
             ClaudeArgumentToken::Underscore => print!("_"),
             ClaudeArgumentToken::Break => println!(),
+            ClaudeArgumentToken::Worktree => {
+                if repo.is_worktree() {
+                    print!("worktree");
+                }
+            }
         }
     }
 }

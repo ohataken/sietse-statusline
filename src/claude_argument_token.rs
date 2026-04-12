@@ -25,4 +25,5 @@ pub enum ClaudeArgumentToken {
     Hyphen,
     Underscore,
     Break,
+    Worktree,
 }
