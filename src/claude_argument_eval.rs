@@ -55,6 +55,7 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
             ClaudeArgumentToken::Slash => print!("/"),
             ClaudeArgumentToken::Hyphen => print!("-"),
             ClaudeArgumentToken::Underscore => print!("_"),
+            ClaudeArgumentToken::Break => println!(),
         }
     }
 }
