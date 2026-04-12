@@ -30,6 +30,7 @@ pub fn parse(args: &[String]) -> Vec<ClaudeArgumentToken> {
             "--underscore" => ClaudeArgumentToken::Underscore,
             "--break" => ClaudeArgumentToken::Break,
             "--worktree" => ClaudeArgumentToken::Worktree,
+            "--branch-head-sha" => ClaudeArgumentToken::BranchHeadSha,
             other => {
                 eprintln!("unknown argument: {}", other);
                 std::process::exit(1);
