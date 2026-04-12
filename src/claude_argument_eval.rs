@@ -14,25 +14,19 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
         .and_then(|n| n.to_str())
         .unwrap_or("");
 
-    let needs_branch = tokens
-        .iter()
-        .any(|t| matches!(t, ClaudeArgumentToken::BranchName));
-    let branch_name = if needs_branch {
-        let repo = git2::Repository::discover(&payload.workspace.current_dir)
-            .expect("failed to discover repository");
+    let repo = git2::Repository::discover(&payload.workspace.current_dir)
+        .expect("failed to discover repository");
+
+    let branch_name = {
         let head = repo.head().expect("failed to get HEAD");
-        Some(head.shorthand().unwrap_or("HEAD").to_string())
-    } else {
-        None
+        head.shorthand().unwrap_or("HEAD").to_string()
     };
 
     for token in &tokens {
         match token {
             ClaudeArgumentToken::ProjectDirName => print!("{}", project_dir_name),
             ClaudeArgumentToken::CurrentDirName => print!("{}", current_dir_name),
-            ClaudeArgumentToken::BranchName => {
-                print!("{}", branch_name.as_deref().unwrap_or("HEAD"));
-            }
+            ClaudeArgumentToken::BranchName => print!("{}", branch_name),
             ClaudeArgumentToken::Black => print!("\x1b[30m"),
             ClaudeArgumentToken::Red => print!("\x1b[31m"),
             ClaudeArgumentToken::Green => print!("\x1b[32m"),
