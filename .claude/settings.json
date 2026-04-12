@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "deny": [
+    ],
+    "ask": [
+    ],
+    "allow": [
+    ]
+  }
+}
