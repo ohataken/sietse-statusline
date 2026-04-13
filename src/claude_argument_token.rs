@@ -27,4 +27,5 @@ pub enum ClaudeArgumentToken {
     Break,
     Worktree,
     BranchHeadSha,
+    Bold,
 }
