@@ -34,6 +34,18 @@ brew install sietse-statusline
 | `--branch-head-sha` | full commit SHA of HEAD |
 | `--worktree` | prints "worktree" if inside a git worktree, nothing otherwise |
 
+### styles
+
+| argument | description |
+|---|---|
+| `--bold` | bold style |
+
+### reset
+
+| argument | description |
+|---|---|
+| `--reset` | reset all styles |
+
 ### colors
 
 | argument | description |
@@ -54,7 +66,6 @@ brew install sietse-statusline
 | `--bright-magenta` | bright magenta foreground |
 | `--bright-cyan` | bright cyan foreground |
 | `--bright-white` | bright white foreground |
-| `--reset` | reset all styles |
 
 ### separators
 
@@ -66,3 +77,7 @@ brew install sietse-statusline
 | `--hyphen` | hyphen character |
 | `--underscore` | underscore character |
 | `--break` | line break |
+
+### literal strings
+
+Unrecognized arguments are treated as literal strings.
