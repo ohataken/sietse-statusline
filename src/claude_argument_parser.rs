@@ -32,10 +32,7 @@ pub fn parse(args: &[String]) -> Vec<ClaudeArgumentToken> {
             "--worktree" => ClaudeArgumentToken::Worktree,
             "--branch-head-sha" => ClaudeArgumentToken::BranchHeadSha,
             "--bold" => ClaudeArgumentToken::Bold,
-            other => {
-                eprintln!("unknown argument: {}", other);
-                std::process::exit(1);
-            }
+            other => ClaudeArgumentToken::Literal(other.to_string()),
         })
         .collect()
 }
