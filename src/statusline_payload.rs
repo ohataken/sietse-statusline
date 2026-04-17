@@ -2,7 +2,13 @@ use serde::Deserialize;
 
 #[derive(Deserialize)]
 pub struct StatuslinePayload {
+    pub model: ModelPayload,
     pub workspace: WorkspacePayload,
+}
+
+#[derive(Deserialize)]
+pub struct ModelPayload {
+    pub id: String,
 }
 
 #[derive(Deserialize)]
