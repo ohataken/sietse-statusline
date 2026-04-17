@@ -32,6 +32,7 @@ pub fn parse(args: &[String]) -> Vec<ClaudeArgumentToken> {
             "--worktree" => ClaudeArgumentToken::Worktree,
             "--branch-head-sha" => ClaudeArgumentToken::BranchHeadSha,
             "--bold" => ClaudeArgumentToken::Bold,
+            "--model-id" => ClaudeArgumentToken::ModelId,
             other => ClaudeArgumentToken::Literal(other.to_string()),
         })
         .collect()

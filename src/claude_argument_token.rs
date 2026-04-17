@@ -28,5 +28,6 @@ pub enum ClaudeArgumentToken {
     Worktree,
     BranchHeadSha,
     Bold,
+    ModelId,
     Literal(String),
 }
