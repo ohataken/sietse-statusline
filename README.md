@@ -33,6 +33,8 @@ brew install sietse-statusline
 | `--branch-name` | current git branch name |
 | `--branch-head-sha` | full commit SHA of HEAD |
 | `--worktree` | prints "worktree" if inside a git worktree, nothing otherwise |
+| `--model-id` | model identifier (e.g. `claude-opus-4-6`) |
+| `--model-display-name` | model display name (e.g. `Opus`) |
 
 ### styles
 
