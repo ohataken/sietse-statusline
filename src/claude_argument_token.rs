@@ -29,5 +29,6 @@ pub enum ClaudeArgumentToken {
     BranchHeadSha,
     Bold,
     ModelId,
+    ModelDisplayName,
     Literal(String),
 }

@@ -9,6 +9,7 @@ pub struct StatuslinePayload {
 #[derive(Deserialize)]
 pub struct ModelPayload {
     pub id: String,
+    pub display_name: String,
 }
 
 #[derive(Deserialize)]

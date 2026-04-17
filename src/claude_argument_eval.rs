@@ -61,6 +61,7 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
             }
             ClaudeArgumentToken::BranchHeadSha => print!("{}", branch_head_sha),
             ClaudeArgumentToken::ModelId => print!("{}", payload.model.id),
+            ClaudeArgumentToken::ModelDisplayName => print!("{}", payload.model.display_name),
             ClaudeArgumentToken::Bold => print!("\x1b[1m"),
             ClaudeArgumentToken::Literal(s) => print!("{}", s),
         }
