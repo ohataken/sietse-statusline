@@ -22,6 +22,17 @@ brew install sietse-statusline
 }
 ```
 
+starship-like example:
+
+```json
+{
+  "statusLine": {
+    "type": "command",
+    "command": "sietse-statusline claude --cyan --bold --current-dir-name --reset --space --white on --space --magenta --bold  --space --branch-name --space --red [ --git-status ] --space 🤖 --space --reset --bold --red --model-id --reset"
+  }
+}
+```
+
 ## available arguments
 
 ### data
