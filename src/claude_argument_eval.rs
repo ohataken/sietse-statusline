@@ -14,17 +14,20 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
         .and_then(|n| n.to_str())
         .unwrap_or("");
 
-    let repo = git2::Repository::discover(&payload.workspace.current_dir)
-        .expect("failed to discover repository");
+    let repo = git2::Repository::discover(&payload.workspace.current_dir).ok();
 
-    let head = repo.head().expect("failed to get HEAD");
+    let head = repo.as_ref().and_then(|r| r.head().ok());
 
-    let branch_name = head.shorthand().unwrap_or("HEAD").to_string();
+    let branch_name = head
+        .as_ref()
+        .map(|h| h.shorthand().unwrap_or("HEAD").to_string())
+        .unwrap_or_default();
 
     let branch_head_sha = head
-        .target()
-        .expect("failed to get HEAD target")
-        .to_string();
+        .as_ref()
+        .and_then(|h| h.target())
+        .map(|oid| oid.to_string())
+        .unwrap_or_default();
 
     for token in &tokens {
         match token {
@@ -55,7 +58,7 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
             ClaudeArgumentToken::Underscore => print!("_"),
             ClaudeArgumentToken::Break => println!(),
             ClaudeArgumentToken::Worktree => {
-                if repo.is_worktree() {
+                if repo.as_ref().is_some_and(|r| r.is_worktree()) {
                     print!("worktree");
                 }
             }
