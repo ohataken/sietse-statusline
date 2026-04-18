@@ -65,6 +65,19 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
             ClaudeArgumentToken::BranchHeadSha => print!("{}", branch_head_sha),
             ClaudeArgumentToken::ModelId => print!("{}", payload.model.id),
             ClaudeArgumentToken::ModelDisplayName => print!("{}", payload.model.display_name),
+            ClaudeArgumentToken::GitStatus => {
+                let has_modified = repo
+                    .as_ref()
+                    .and_then(|r| r.statuses(None).ok())
+                    .is_some_and(|statuses| {
+                        statuses
+                            .iter()
+                            .any(|e| e.status().contains(git2::Status::WT_MODIFIED))
+                    });
+                if has_modified {
+                    print!("!");
+                }
+            }
             ClaudeArgumentToken::Bold => print!("\x1b[1m"),
             ClaudeArgumentToken::Literal(s) => print!("{}", s),
         }
