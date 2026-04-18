@@ -66,16 +66,22 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
             ClaudeArgumentToken::ModelId => print!("{}", payload.model.id),
             ClaudeArgumentToken::ModelDisplayName => print!("{}", payload.model.display_name),
             ClaudeArgumentToken::GitStatus => {
-                let has_modified = repo
+                let flags: Vec<git2::Status> = repo
                     .as_ref()
-                    .and_then(|r| r.statuses(None).ok())
-                    .is_some_and(|statuses| {
-                        statuses
-                            .iter()
-                            .any(|e| e.status().contains(git2::Status::WT_MODIFIED))
-                    });
-                if has_modified {
-                    print!("!");
+                    .and_then(|r| {
+                        let mut opts = git2::StatusOptions::new();
+                        opts.include_untracked(true)
+                            .renames_head_to_index(true)
+                            .renames_index_to_workdir(true)
+                            .renames_from_rewrites(true);
+                        r.statuses(Some(&mut opts)).ok()
+                    })
+                    .map(|statuses| statuses.iter().map(|e| e.status()).collect())
+                    .unwrap_or_default();
+                let any = |mask: git2::Status| flags.iter().any(|s| s.intersects(mask));
+
+                if any(git2::Status::CONFLICTED) {
+                    print!("=");
                 }
                 let ahead_behind = repo.as_ref().and_then(|r| {
                     let local = head.as_ref()?.target()?;
@@ -92,6 +98,30 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
                         (false, true) => print!("⇣"),
                         (false, false) => {}
                     }
+                }
+                if any(git2::Status::WT_NEW) {
+                    print!("?");
+                }
+                let has_stash = repo
+                    .as_ref()
+                    .is_some_and(|r| r.find_reference("refs/stash").is_ok());
+                if has_stash {
+                    print!("$");
+                }
+                if any(git2::Status::WT_MODIFIED) {
+                    print!("!");
+                }
+                if any(git2::Status::INDEX_NEW
+                    | git2::Status::INDEX_MODIFIED
+                    | git2::Status::INDEX_TYPECHANGE)
+                {
+                    print!("+");
+                }
+                if any(git2::Status::INDEX_RENAMED | git2::Status::WT_RENAMED) {
+                    print!("»");
+                }
+                if any(git2::Status::INDEX_DELETED | git2::Status::WT_DELETED) {
+                    print!("✘");
                 }
             }
             ClaudeArgumentToken::Bold => print!("\x1b[1m"),
