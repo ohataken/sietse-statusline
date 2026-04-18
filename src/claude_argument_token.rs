@@ -30,5 +30,6 @@ pub enum ClaudeArgumentToken {
     Bold,
     ModelId,
     ModelDisplayName,
+    GitStatus,
     Literal(String),
 }
