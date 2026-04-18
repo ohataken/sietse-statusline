@@ -77,6 +77,22 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
                 if has_modified {
                     print!("!");
                 }
+                let ahead_behind = repo.as_ref().and_then(|r| {
+                    let local = head.as_ref()?.target()?;
+                    let shorthand = head.as_ref()?.shorthand()?;
+                    let branch = r.find_branch(shorthand, git2::BranchType::Local).ok()?;
+                    let upstream = branch.upstream().ok()?;
+                    let upstream_oid = upstream.get().target()?;
+                    r.graph_ahead_behind(local, upstream_oid).ok()
+                });
+                if let Some((ahead, behind)) = ahead_behind {
+                    match (ahead > 0, behind > 0) {
+                        (true, true) => print!("⇕"),
+                        (true, false) => print!("⇡"),
+                        (false, true) => print!("⇣"),
+                        (false, false) => {}
+                    }
+                }
             }
             ClaudeArgumentToken::Bold => print!("\x1b[1m"),
             ClaudeArgumentToken::Literal(s) => print!("{}", s),
