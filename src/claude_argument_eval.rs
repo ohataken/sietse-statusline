@@ -29,6 +29,15 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
         .map(|oid| oid.to_string())
         .unwrap_or_default();
 
+    let ahead_behind = repo.as_ref().and_then(|r| {
+        let local = head.as_ref()?.target()?;
+        let shorthand = head.as_ref()?.shorthand()?;
+        let branch = r.find_branch(shorthand, git2::BranchType::Local).ok()?;
+        let upstream = branch.upstream().ok()?;
+        let upstream_oid = upstream.get().target()?;
+        r.graph_ahead_behind(local, upstream_oid).ok()
+    });
+
     for token in &tokens {
         match token {
             ClaudeArgumentToken::ProjectDirName => print!("{}", project_dir_name),
@@ -83,14 +92,6 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
                 if any(git2::Status::CONFLICTED) {
                     print!("=");
                 }
-                let ahead_behind = repo.as_ref().and_then(|r| {
-                    let local = head.as_ref()?.target()?;
-                    let shorthand = head.as_ref()?.shorthand()?;
-                    let branch = r.find_branch(shorthand, git2::BranchType::Local).ok()?;
-                    let upstream = branch.upstream().ok()?;
-                    let upstream_oid = upstream.get().target()?;
-                    r.graph_ahead_behind(local, upstream_oid).ok()
-                });
                 if let Some((ahead, behind)) = ahead_behind {
                     match (ahead > 0, behind > 0) {
                         (true, true) => print!("⇕"),
