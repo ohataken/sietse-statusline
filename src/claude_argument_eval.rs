@@ -40,7 +40,6 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
             r.graph_ahead_behind(local, upstream_oid).ok()
         })
         .unwrap_or((0, 0));
-    let git_status = GitStatus::new(repo.as_ref(), ahead_behind);
 
     for token in &tokens {
         match token {
@@ -78,90 +77,61 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
             ClaudeArgumentToken::BranchHeadSha => print!("{}", branch_head_sha),
             ClaudeArgumentToken::ModelId => print!("{}", payload.model.id),
             ClaudeArgumentToken::ModelDisplayName => print!("{}", payload.model.display_name),
-            ClaudeArgumentToken::GitStatus => print!("{}", git_status.symbols()),
+            ClaudeArgumentToken::GitStatus => {
+                let flags: Vec<git2::Status> = repo
+                    .as_ref()
+                    .and_then(|r| {
+                        let mut opts = git2::StatusOptions::new();
+                        opts.include_untracked(true)
+                            .renames_head_to_index(true)
+                            .renames_index_to_workdir(true)
+                            .renames_from_rewrites(true);
+                        r.statuses(Some(&mut opts)).ok()
+                    })
+                    .map(|statuses| statuses.iter().map(|e| e.status()).collect())
+                    .unwrap_or_default();
+                let any = |mask: git2::Status| flags.iter().any(|s| s.intersects(mask));
+
+                if any(git2::Status::CONFLICTED) {
+                    print!("=");
+                }
+                let (ahead, behind) = ahead_behind;
+                if ahead > 0 && behind > 0 {
+                    print!("⇕");
+                }
+                if ahead > 0 && behind == 0 {
+                    print!("⇡");
+                }
+                if ahead == 0 && behind > 0 {
+                    print!("⇣");
+                }
+                if any(git2::Status::WT_NEW) {
+                    print!("?");
+                }
+                let has_stash = repo
+                    .as_ref()
+                    .is_some_and(|r| r.find_reference("refs/stash").is_ok());
+                if has_stash {
+                    print!("$");
+                }
+                if any(git2::Status::WT_MODIFIED) {
+                    print!("!");
+                }
+                if any(git2::Status::INDEX_NEW
+                    | git2::Status::INDEX_MODIFIED
+                    | git2::Status::INDEX_TYPECHANGE)
+                {
+                    print!("+");
+                }
+                if any(git2::Status::INDEX_RENAMED | git2::Status::WT_RENAMED) {
+                    print!("»");
+                }
+                if any(git2::Status::INDEX_DELETED | git2::Status::WT_DELETED) {
+                    print!("✘");
+                }
+            }
             ClaudeArgumentToken::Bold => print!("\x1b[1m"),
             ClaudeArgumentToken::Literal(s) => print!("{}", s),
         }
-    }
-}
-
-struct GitStatus {
-    conflicted: bool,
-    ahead: bool,
-    behind: bool,
-    untracked: bool,
-    stashed: bool,
-    unstaged: bool,
-    staged: bool,
-    renamed: bool,
-    deleted: bool,
-}
-
-impl GitStatus {
-    fn new(repo: Option<&git2::Repository>, ahead_behind: (usize, usize)) -> Self {
-        let flags: Vec<git2::Status> = repo
-            .and_then(|r| {
-                let mut opts = git2::StatusOptions::new();
-                opts.include_untracked(true)
-                    .renames_head_to_index(true)
-                    .renames_index_to_workdir(true)
-                    .renames_from_rewrites(true);
-                r.statuses(Some(&mut opts)).ok()
-            })
-            .map(|statuses| statuses.iter().map(|e| e.status()).collect())
-            .unwrap_or_default();
-        let any = |mask: git2::Status| flags.iter().any(|s| s.intersects(mask));
-        let (ahead, behind) = ahead_behind;
-
-        Self {
-            conflicted: any(git2::Status::CONFLICTED),
-            ahead: ahead > 0,
-            behind: behind > 0,
-            untracked: any(git2::Status::WT_NEW),
-            stashed: repo.is_some_and(|r| r.find_reference("refs/stash").is_ok()),
-            unstaged: any(git2::Status::WT_MODIFIED),
-            staged: any(git2::Status::INDEX_NEW
-                | git2::Status::INDEX_MODIFIED
-                | git2::Status::INDEX_TYPECHANGE),
-            renamed: any(git2::Status::INDEX_RENAMED | git2::Status::WT_RENAMED),
-            deleted: any(git2::Status::INDEX_DELETED | git2::Status::WT_DELETED),
-        }
-    }
-
-    fn symbols(&self) -> String {
-        let mut status = String::new();
-
-        if self.conflicted {
-            status.push('=');
-        }
-        if self.ahead && self.behind {
-            status.push('⇕');
-        }
-        if self.ahead && !self.behind {
-            status.push('⇡');
-        }
-        if !self.ahead && self.behind {
-            status.push('⇣');
-        }
-        if self.untracked {
-            status.push('?');
-        }
-        if self.stashed {
-            status.push('$');
-        }
-        if self.unstaged {
-            status.push('!');
-        }
-        if self.staged {
-            status.push('+');
-        }
-        if self.renamed {
-            status.push('»');
-        }
-        if self.deleted {
-            status.push('✘');
-        }
-
-        status
     }
 }
