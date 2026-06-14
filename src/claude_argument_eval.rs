@@ -29,14 +29,17 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
         .map(|oid| oid.to_string())
         .unwrap_or_default();
 
-    let ahead_behind = repo.as_ref().and_then(|r| {
-        let local = head.as_ref()?.target()?;
-        let shorthand = head.as_ref()?.shorthand()?;
-        let branch = r.find_branch(shorthand, git2::BranchType::Local).ok()?;
-        let upstream = branch.upstream().ok()?;
-        let upstream_oid = upstream.get().target()?;
-        r.graph_ahead_behind(local, upstream_oid).ok()
-    });
+    let ahead_behind = repo
+        .as_ref()
+        .and_then(|r| {
+            let local = head.as_ref()?.target()?;
+            let shorthand = head.as_ref()?.shorthand()?;
+            let branch = r.find_branch(shorthand, git2::BranchType::Local).ok()?;
+            let upstream = branch.upstream().ok()?;
+            let upstream_oid = upstream.get().target()?;
+            r.graph_ahead_behind(local, upstream_oid).ok()
+        })
+        .unwrap_or((0, 0));
 
     for token in &tokens {
         match token {
@@ -92,13 +95,15 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
                 if any(git2::Status::CONFLICTED) {
                     print!("=");
                 }
-                if let Some((ahead, behind)) = ahead_behind {
-                    match (ahead > 0, behind > 0) {
-                        (true, true) => print!("⇕"),
-                        (true, false) => print!("⇡"),
-                        (false, true) => print!("⇣"),
-                        (false, false) => {}
-                    }
+                let (ahead, behind) = ahead_behind;
+                if ahead > 0 && behind > 0 {
+                    print!("⇕");
+                }
+                if ahead > 0 && behind == 0 {
+                    print!("⇡");
+                }
+                if ahead == 0 && behind > 0 {
+                    print!("⇣");
                 }
                 if any(git2::Status::WT_NEW) {
                     print!("?");
