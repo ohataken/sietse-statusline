@@ -10,6 +10,7 @@ pub struct StatuslinePayload {
 #[derive(Deserialize)]
 pub struct ContextWindowPayload {
     pub total_input_tokens: u64,
+    pub total_output_tokens: u64,
 }
 
 #[derive(Deserialize)]
