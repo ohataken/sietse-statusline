@@ -133,6 +133,9 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
             ClaudeArgumentToken::ContextWindowTotalInputTokens => {
                 print!("{}", payload.context_window.total_input_tokens)
             }
+            ClaudeArgumentToken::ContextWindowTotalOutputTokens => {
+                print!("{}", payload.context_window.total_output_tokens)
+            }
             ClaudeArgumentToken::Bold => print!("\x1b[1m"),
             ClaudeArgumentToken::Literal(s) => print!("{}", s),
         }
