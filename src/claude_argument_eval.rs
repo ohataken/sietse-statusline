@@ -142,6 +142,12 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
             ClaudeArgumentToken::ContextWindowUsedPercentage => {
                 print!("{}", payload.context_window.used_percentage.unwrap_or(0.0))
             }
+            ClaudeArgumentToken::ContextWindowRemainingPercentage => {
+                print!(
+                    "{}",
+                    payload.context_window.remaining_percentage.unwrap_or(100.0)
+                )
+            }
             ClaudeArgumentToken::Bold => print!("\x1b[1m"),
             ClaudeArgumentToken::Literal(s) => print!("{}", s),
         }

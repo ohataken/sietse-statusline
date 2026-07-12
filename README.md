@@ -51,6 +51,7 @@ starship-like example:
 | `--context-window-total-output-tokens` | output tokens from the most recent response |
 | `--context-window-size` | maximum context window size in tokens |
 | `--context-window-used-percentage` | percentage of context window used (`0` until available) |
+| `--context-window-remaining-percentage` | percentage of context window remaining (`100` until available) |
 
 ### styles
 
