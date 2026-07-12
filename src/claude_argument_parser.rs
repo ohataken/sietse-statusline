@@ -42,6 +42,9 @@ pub fn parse(args: &[String]) -> Vec<ClaudeArgumentToken> {
                 ClaudeArgumentToken::ContextWindowTotalOutputTokens
             }
             "--context-window-size" => ClaudeArgumentToken::ContextWindowSize,
+            "--context-window-used-percentage" => {
+                ClaudeArgumentToken::ContextWindowUsedPercentage
+            }
             other => ClaudeArgumentToken::Literal(other.to_string()),
         })
         .collect()

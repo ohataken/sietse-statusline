@@ -34,5 +34,6 @@ pub enum ClaudeArgumentToken {
     ContextWindowTotalInputTokens,
     ContextWindowTotalOutputTokens,
     ContextWindowSize,
+    ContextWindowUsedPercentage,
     Literal(String),
 }
