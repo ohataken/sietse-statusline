@@ -16,6 +16,14 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
 
     let repo = git2::Repository::discover(&payload.workspace.current_dir).ok();
 
+    let common_dir_name = repo
+        .as_ref()
+        .and_then(|r| r.commondir().parent())
+        .and_then(|p| p.file_name())
+        .and_then(|n| n.to_str())
+        .map(|s| s.to_string())
+        .unwrap_or_default();
+
     let head = repo.as_ref().and_then(|r| r.head().ok());
 
     let branch_name = head
@@ -74,6 +82,7 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
                     print!("worktree");
                 }
             }
+            ClaudeArgumentToken::CommonDirName => print!("{}", common_dir_name),
             ClaudeArgumentToken::BranchHeadSha => print!("{}", branch_head_sha),
             ClaudeArgumentToken::ModelId => print!("{}", payload.model.id),
             ClaudeArgumentToken::ModelDisplayName => print!("{}", payload.model.display_name),
