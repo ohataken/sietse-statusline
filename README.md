@@ -48,6 +48,7 @@ starship-like example:
 | `--model-id` | model identifier (e.g. `claude-opus-4-6`) |
 | `--model-display-name` | model display name (e.g. `Opus`) |
 | `--context-window-total-input-tokens` | input tokens currently in the context window |
+| `--context-window-total-output-tokens` | output tokens from the most recent response |
 
 ### styles
 
