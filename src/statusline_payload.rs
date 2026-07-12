@@ -11,6 +11,7 @@ pub struct StatuslinePayload {
 pub struct ContextWindowPayload {
     pub total_input_tokens: u64,
     pub total_output_tokens: u64,
+    pub context_window_size: u64,
 }
 
 #[derive(Deserialize)]
