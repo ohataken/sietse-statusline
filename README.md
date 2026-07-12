@@ -49,6 +49,7 @@ starship-like example:
 | `--model-display-name` | model display name (e.g. `Opus`) |
 | `--context-window-total-input-tokens` | input tokens currently in the context window |
 | `--context-window-total-output-tokens` | output tokens from the most recent response |
+| `--context-window-size` | maximum context window size in tokens |
 
 ### styles
 
