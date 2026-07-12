@@ -33,5 +33,6 @@ pub enum ClaudeArgumentToken {
     GitStatus,
     ContextWindowTotalInputTokens,
     ContextWindowTotalOutputTokens,
+    ContextWindowSize,
     Literal(String),
 }
