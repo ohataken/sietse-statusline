@@ -47,6 +47,7 @@ starship-like example:
 | `--git-status` | prints status indicators: `=` conflict, `⇡`/`⇣`/`⇕` ahead/behind/diverged, `?` untracked, `$` stash, `!` unstaged modifications, `+` staged changes, `»` renamed, `✘` deleted |
 | `--model-id` | model identifier (e.g. `claude-opus-4-6`) |
 | `--model-display-name` | model display name (e.g. `Opus`) |
+| `--context-window-total-input-tokens` | input tokens currently in the context window |
 
 ### styles
 
