@@ -30,6 +30,7 @@ pub fn parse(args: &[String]) -> Vec<ClaudeArgumentToken> {
             "--underscore" => ClaudeArgumentToken::Underscore,
             "--break" => ClaudeArgumentToken::Break,
             "--worktree" => ClaudeArgumentToken::Worktree,
+            "--common-dir-name" => ClaudeArgumentToken::CommonDirName,
             "--branch-head-sha" => ClaudeArgumentToken::BranchHeadSha,
             "--bold" => ClaudeArgumentToken::Bold,
             "--model-id" => ClaudeArgumentToken::ModelId,
