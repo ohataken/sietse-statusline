@@ -31,5 +31,6 @@ pub enum ClaudeArgumentToken {
     ModelId,
     ModelDisplayName,
     GitStatus,
+    ContextWindowTotalInputTokens,
     Literal(String),
 }

@@ -4,6 +4,12 @@ use serde::Deserialize;
 pub struct StatuslinePayload {
     pub model: ModelPayload,
     pub workspace: WorkspacePayload,
+    pub context_window: ContextWindowPayload,
+}
+
+#[derive(Deserialize)]
+pub struct ContextWindowPayload {
+    pub total_input_tokens: u64,
 }
 
 #[derive(Deserialize)]
