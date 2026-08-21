@@ -1,11 +1,11 @@
 class SietseStatusline < Formula
   desc "My little utilities for Claude Code / Codex hooks"
   homepage "https://github.com/ohataken/sietse-statusline"
-  version "0.8.0"
+  version "0.9.0"
 
   on_arm do
     url "https://github.com/ohataken/sietse-statusline/releases/download/v#{version}/sietse-statusline-aarch64-apple-darwin.tar.gz"
-    sha256 "812027c90e06d2496d959e72c429352c77b6a17b38737f6ee8e8876399285591"
+    sha256 "6e3131a2ec6b0afbb4379c96979c7011d1fa5af5ba6f6578e1e5146cc54bd514"
   end
 
   def install
