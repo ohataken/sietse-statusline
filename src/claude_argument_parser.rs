@@ -35,6 +35,7 @@ pub fn parse(args: &[String]) -> Vec<ClaudeArgumentToken> {
             "--bold" => ClaudeArgumentToken::Bold,
             "--model-id" => ClaudeArgumentToken::ModelId,
             "--model-display-name" => ClaudeArgumentToken::ModelDisplayName,
+            "--session-id" => ClaudeArgumentToken::SessionId,
             "--git-status" => ClaudeArgumentToken::GitStatus,
             "--context-window-total-input-tokens" => {
                 ClaudeArgumentToken::ContextWindowTotalInputTokens

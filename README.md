@@ -53,6 +53,7 @@ starship-like example:
 | `--context-window-size` | maximum context window size in tokens |
 | `--context-window-used-percentage` | percentage of context window used (`0` until available) |
 | `--context-window-remaining-percentage` | percentage of context window remaining (`100` until available) |
+| `--session-id` | unique session identifier |
 
 ### styles
 

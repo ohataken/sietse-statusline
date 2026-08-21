@@ -2,6 +2,7 @@ use serde::Deserialize;
 
 #[derive(Deserialize)]
 pub struct StatuslinePayload {
+    pub session_id: String,
     pub model: ModelPayload,
     pub workspace: WorkspacePayload,
     pub context_window: ContextWindowPayload,

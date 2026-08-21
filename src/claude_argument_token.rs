@@ -31,6 +31,7 @@ pub enum ClaudeArgumentToken {
     Bold,
     ModelId,
     ModelDisplayName,
+    SessionId,
     GitStatus,
     ContextWindowTotalInputTokens,
     ContextWindowTotalOutputTokens,
