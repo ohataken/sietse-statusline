@@ -1,5 +1,5 @@
 class SietseStatusline < Formula
-  desc "My little utilities for Claude Code / Codex hooks"
+  desc "my little statusline for Claude Code."
   homepage "https://github.com/ohataken/sietse-statusline"
   version "0.9.0"
 
