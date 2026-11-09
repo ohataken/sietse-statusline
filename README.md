@@ -54,6 +54,7 @@ starship-like example:
 | `--context-window-used-percentage` | percentage of context window used (`0` until available) |
 | `--context-window-remaining-percentage` | percentage of context window remaining (`100` until available) |
 | `--session-id` | unique session identifier |
+| `--claude-config-dir` | value of the `CLAUDE_CONFIG_DIR` environment variable, nothing if unset or empty |
 
 ### styles
 
