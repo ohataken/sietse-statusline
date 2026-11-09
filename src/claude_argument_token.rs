@@ -33,6 +33,7 @@ pub enum ClaudeArgumentToken {
     ModelDisplayName,
     SessionId,
     ClaudeConfigDir,
+    ClaudeConfigDirName,
     GitStatus,
     ContextWindowTotalInputTokens,
     ContextWindowTotalOutputTokens,
