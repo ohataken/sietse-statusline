@@ -14,6 +14,8 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
         .and_then(|n| n.to_str())
         .unwrap_or("");
 
+    let claude_config_dir = std::env::var("CLAUDE_CONFIG_DIR").unwrap_or_default();
+
     let repo = git2::Repository::discover(&payload.workspace.current_dir).ok();
 
     let common_dir_name = repo
@@ -87,6 +89,7 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
             ClaudeArgumentToken::ModelId => print!("{}", payload.model.id),
             ClaudeArgumentToken::ModelDisplayName => print!("{}", payload.model.display_name),
             ClaudeArgumentToken::SessionId => print!("{}", payload.session_id),
+            ClaudeArgumentToken::ClaudeConfigDir => print!("{}", claude_config_dir),
             ClaudeArgumentToken::GitStatus => {
                 let flags: Vec<git2::Status> = repo
                     .as_ref()
