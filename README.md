@@ -55,6 +55,7 @@ starship-like example:
 | `--context-window-remaining-percentage` | percentage of context window remaining (`100` until available) |
 | `--session-id` | unique session identifier |
 | `--claude-config-dir` | value of the `CLAUDE_CONFIG_DIR` environment variable, nothing if unset or empty |
+| `--claude-config-dir-name` | last directory name of `CLAUDE_CONFIG_DIR`, nothing if unset or empty |
 
 ### styles
 
