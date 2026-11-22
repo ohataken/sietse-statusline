@@ -30,13 +30,6 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
         .map(|s| s.to_string())
         .unwrap_or_default();
 
-    let head = repo.as_ref().and_then(|r| r.head().ok());
-
-    let branch_name = head
-        .as_ref()
-        .map(|h| h.shorthand().unwrap_or("HEAD").to_string())
-        .unwrap_or_default();
-
     for token in &tokens {
         match token {
             ClaudeArgumentToken::ProjectDirName => print!("{}", project_dir_name),
