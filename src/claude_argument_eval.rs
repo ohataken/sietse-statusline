@@ -62,7 +62,6 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
                     print!("worktree");
                 }
             }
-            ClaudeArgumentToken::CommonDirName => print!("{}", common_dir_name),
             ClaudeArgumentToken::ModelId => print!("{}", payload.model.id),
             ClaudeArgumentToken::ModelDisplayName => print!("{}", payload.model.display_name),
             ClaudeArgumentToken::SessionId => print!("{}", payload.session_id),
