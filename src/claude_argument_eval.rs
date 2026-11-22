@@ -41,7 +41,6 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
         match token {
             ClaudeArgumentToken::ProjectDirName => print!("{}", project_dir_name),
             ClaudeArgumentToken::CurrentDirName => print!("{}", current_dir_name),
-            ClaudeArgumentToken::BranchName => print!("{}", branch_name),
             ClaudeArgumentToken::Black => print!("\x1b[30m"),
             ClaudeArgumentToken::Red => print!("\x1b[31m"),
             ClaudeArgumentToken::Green => print!("\x1b[32m"),
