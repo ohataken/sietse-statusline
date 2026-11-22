@@ -42,7 +42,6 @@ starship-like example:
 | `--current-dir-name` | name of the current working directory |
 | `--project-dir-name` | name of the project root directory |
 | `--worktree` | prints "worktree" if inside a git worktree, nothing otherwise |
-| `--common-dir-name` | name of the directory containing the git common directory, i.e. the main repository name even inside a worktree |
 | `--model-id` | model identifier (e.g. `claude-opus-4-6`) |
 | `--model-display-name` | model display name (e.g. `Opus`) |
 | `--context-window-total-input-tokens` | input tokens currently in the context window |
