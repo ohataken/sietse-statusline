@@ -49,11 +49,6 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
             ClaudeArgumentToken::Hyphen => print!("-"),
             ClaudeArgumentToken::Underscore => print!("_"),
             ClaudeArgumentToken::Break => println!(),
-            ClaudeArgumentToken::Worktree => {
-                if repo.as_ref().is_some_and(|r| r.is_worktree()) {
-                    print!("worktree");
-                }
-            }
             ClaudeArgumentToken::ModelId => print!("{}", payload.model.id),
             ClaudeArgumentToken::ModelDisplayName => print!("{}", payload.model.display_name),
             ClaudeArgumentToken::SessionId => print!("{}", payload.session_id),
