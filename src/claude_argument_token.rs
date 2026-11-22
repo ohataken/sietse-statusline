@@ -1,7 +1,6 @@
 pub enum ClaudeArgumentToken {
     CurrentDirName,
     ProjectDirName,
-    BranchName,
     Black,
     Red,
     Green,
