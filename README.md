@@ -39,6 +39,7 @@ starship-like example:
 
 | argument | description |
 |---|---|
+| `--current-dir` | full path of the current working directory |
 | `--current-dir-name` | name of the current working directory |
 | `--project-dir-name` | name of the project root directory |
 | `--model-id` | model identifier (e.g. `claude-opus-4-6`) |
