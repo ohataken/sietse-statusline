@@ -28,7 +28,6 @@ pub fn parse(args: &[String]) -> Vec<ClaudeArgumentToken> {
             "--hyphen" => ClaudeArgumentToken::Hyphen,
             "--underscore" => ClaudeArgumentToken::Underscore,
             "--break" => ClaudeArgumentToken::Break,
-            "--worktree" => ClaudeArgumentToken::Worktree,
             "--bold" => ClaudeArgumentToken::Bold,
             "--model-id" => ClaudeArgumentToken::ModelId,
             "--model-display-name" => ClaudeArgumentToken::ModelDisplayName,

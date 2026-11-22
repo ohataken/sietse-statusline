@@ -24,7 +24,6 @@ pub enum ClaudeArgumentToken {
     Hyphen,
     Underscore,
     Break,
-    Worktree,
     Bold,
     ModelId,
     ModelDisplayName,
