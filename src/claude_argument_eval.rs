@@ -22,14 +22,6 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
 
     let repo = git2::Repository::discover(&payload.workspace.current_dir).ok();
 
-    let common_dir_name = repo
-        .as_ref()
-        .and_then(|r| r.commondir().parent())
-        .and_then(|p| p.file_name())
-        .and_then(|n| n.to_str())
-        .map(|s| s.to_string())
-        .unwrap_or_default();
-
     for token in &tokens {
         match token {
             ClaudeArgumentToken::ProjectDirName => print!("{}", project_dir_name),
