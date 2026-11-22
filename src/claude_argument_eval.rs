@@ -30,18 +30,10 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
         .map(|s| s.to_string())
         .unwrap_or_default();
 
-    let head = repo.as_ref().and_then(|r| r.head().ok());
-
-    let branch_name = head
-        .as_ref()
-        .map(|h| h.shorthand().unwrap_or("HEAD").to_string())
-        .unwrap_or_default();
-
     for token in &tokens {
         match token {
             ClaudeArgumentToken::ProjectDirName => print!("{}", project_dir_name),
             ClaudeArgumentToken::CurrentDirName => print!("{}", current_dir_name),
-            ClaudeArgumentToken::BranchName => print!("{}", branch_name),
             ClaudeArgumentToken::Black => print!("\x1b[30m"),
             ClaudeArgumentToken::Red => print!("\x1b[31m"),
             ClaudeArgumentToken::Green => print!("\x1b[32m"),

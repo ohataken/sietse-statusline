@@ -28,7 +28,7 @@ starship-like example:
 {
   "statusLine": {
     "type": "command",
-    "command": "sietse-statusline claude --cyan --bold --current-dir-name --reset --space --white on --space --magenta --bold  --space --branch-name --space 🤖 --space --reset --bold --red --model-id --reset"
+    "command": "sietse-statusline claude --cyan --bold --current-dir-name --reset --space 🤖 --space --reset --bold --red --model-id --reset"
   }
 }
 ```
@@ -41,7 +41,6 @@ starship-like example:
 |---|---|
 | `--current-dir-name` | name of the current working directory |
 | `--project-dir-name` | name of the project root directory |
-| `--branch-name` | current git branch name |
 | `--worktree` | prints "worktree" if inside a git worktree, nothing otherwise |
 | `--common-dir-name` | name of the directory containing the git common directory, i.e. the main repository name even inside a worktree |
 | `--model-id` | model identifier (e.g. `claude-opus-4-6`) |

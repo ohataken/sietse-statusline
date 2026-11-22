@@ -5,7 +5,6 @@ pub fn parse(args: &[String]) -> Vec<ClaudeArgumentToken> {
         .map(|arg| match arg.as_str() {
             "--current-dir-name" => ClaudeArgumentToken::CurrentDirName,
             "--project-dir-name" => ClaudeArgumentToken::ProjectDirName,
-            "--branch-name" => ClaudeArgumentToken::BranchName,
             "--black" => ClaudeArgumentToken::Black,
             "--red" => ClaudeArgumentToken::Red,
             "--green" => ClaudeArgumentToken::Green,
