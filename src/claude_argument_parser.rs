@@ -38,7 +38,6 @@ pub fn parse(args: &[String]) -> Vec<ClaudeArgumentToken> {
             "--session-id" => ClaudeArgumentToken::SessionId,
             "--claude-config-dir" => ClaudeArgumentToken::ClaudeConfigDir,
             "--claude-config-dir-name" => ClaudeArgumentToken::ClaudeConfigDirName,
-            "--git-status" => ClaudeArgumentToken::GitStatus,
             "--context-window-total-input-tokens" => {
                 ClaudeArgumentToken::ContextWindowTotalInputTokens
             }
