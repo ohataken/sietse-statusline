@@ -43,18 +43,6 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
         .map(|oid| oid.to_string())
         .unwrap_or_default();
 
-    let ahead_behind = repo
-        .as_ref()
-        .and_then(|r| {
-            let local = head.as_ref()?.target()?;
-            let shorthand = head.as_ref()?.shorthand()?;
-            let branch = r.find_branch(shorthand, git2::BranchType::Local).ok()?;
-            let upstream = branch.upstream().ok()?;
-            let upstream_oid = upstream.get().target()?;
-            r.graph_ahead_behind(local, upstream_oid).ok()
-        })
-        .unwrap_or((0, 0));
-
     for token in &tokens {
         match token {
             ClaudeArgumentToken::ProjectDirName => print!("{}", project_dir_name),
@@ -95,59 +83,6 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
             ClaudeArgumentToken::SessionId => print!("{}", payload.session_id),
             ClaudeArgumentToken::ClaudeConfigDir => print!("{}", claude_config_dir),
             ClaudeArgumentToken::ClaudeConfigDirName => print!("{}", claude_config_dir_name),
-            ClaudeArgumentToken::GitStatus => {
-                let flags: Vec<git2::Status> = repo
-                    .as_ref()
-                    .and_then(|r| {
-                        let mut opts = git2::StatusOptions::new();
-                        opts.include_untracked(true)
-                            .renames_head_to_index(true)
-                            .renames_index_to_workdir(true)
-                            .renames_from_rewrites(true);
-                        r.statuses(Some(&mut opts)).ok()
-                    })
-                    .map(|statuses| statuses.iter().map(|e| e.status()).collect())
-                    .unwrap_or_default();
-                let any = |mask: git2::Status| flags.iter().any(|s| s.intersects(mask));
-
-                if any(git2::Status::CONFLICTED) {
-                    print!("=");
-                }
-                let (ahead, behind) = ahead_behind;
-                if ahead > 0 && behind > 0 {
-                    print!("⇕");
-                }
-                if ahead > 0 && behind == 0 {
-                    print!("⇡");
-                }
-                if ahead == 0 && behind > 0 {
-                    print!("⇣");
-                }
-                if any(git2::Status::WT_NEW) {
-                    print!("?");
-                }
-                let has_stash = repo
-                    .as_ref()
-                    .is_some_and(|r| r.find_reference("refs/stash").is_ok());
-                if has_stash {
-                    print!("$");
-                }
-                if any(git2::Status::WT_MODIFIED) {
-                    print!("!");
-                }
-                if any(git2::Status::INDEX_NEW
-                    | git2::Status::INDEX_MODIFIED
-                    | git2::Status::INDEX_TYPECHANGE)
-                {
-                    print!("+");
-                }
-                if any(git2::Status::INDEX_RENAMED | git2::Status::WT_RENAMED) {
-                    print!("»");
-                }
-                if any(git2::Status::INDEX_DELETED | git2::Status::WT_DELETED) {
-                    print!("✘");
-                }
-            }
             ClaudeArgumentToken::ContextWindowTotalInputTokens => {
                 print!("{}", payload.context_window.total_input_tokens)
             }

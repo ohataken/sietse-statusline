@@ -28,7 +28,7 @@ starship-like example:
 {
   "statusLine": {
     "type": "command",
-    "command": "sietse-statusline claude --cyan --bold --current-dir-name --reset --space --white on --space --magenta --bold  --space --branch-name --space --red [ --git-status ] --space 🤖 --space --reset --bold --red --model-id --reset"
+    "command": "sietse-statusline claude --cyan --bold --current-dir-name --reset --space --white on --space --magenta --bold  --space --branch-name --space 🤖 --space --reset --bold --red --model-id --reset"
   }
 }
 ```
@@ -45,7 +45,6 @@ starship-like example:
 | `--branch-head-sha` | full commit SHA of HEAD |
 | `--worktree` | prints "worktree" if inside a git worktree, nothing otherwise |
 | `--common-dir-name` | name of the directory containing the git common directory, i.e. the main repository name even inside a worktree |
-| `--git-status` | prints status indicators: `=` conflict, `⇡`/`⇣`/`⇕` ahead/behind/diverged, `?` untracked, `$` stash, `!` unstaged modifications, `+` staged changes, `»` renamed, `✘` deleted |
 | `--model-id` | model identifier (e.g. `claude-opus-4-6`) |
 | `--model-display-name` | model display name (e.g. `Opus`) |
 | `--context-window-total-input-tokens` | input tokens currently in the context window |
