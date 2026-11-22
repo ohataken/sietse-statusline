@@ -34,7 +34,6 @@ pub enum ClaudeArgumentToken {
     SessionId,
     ClaudeConfigDir,
     ClaudeConfigDirName,
-    GitStatus,
     ContextWindowTotalInputTokens,
     ContextWindowTotalOutputTokens,
     ContextWindowSize,
