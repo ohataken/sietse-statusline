@@ -43,18 +43,6 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
         .map(|oid| oid.to_string())
         .unwrap_or_default();
 
-    let ahead_behind = repo
-        .as_ref()
-        .and_then(|r| {
-            let local = head.as_ref()?.target()?;
-            let shorthand = head.as_ref()?.shorthand()?;
-            let branch = r.find_branch(shorthand, git2::BranchType::Local).ok()?;
-            let upstream = branch.upstream().ok()?;
-            let upstream_oid = upstream.get().target()?;
-            r.graph_ahead_behind(local, upstream_oid).ok()
-        })
-        .unwrap_or((0, 0));
-
     for token in &tokens {
         match token {
             ClaudeArgumentToken::ProjectDirName => print!("{}", project_dir_name),
