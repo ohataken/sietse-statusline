@@ -27,7 +27,6 @@ pub enum ClaudeArgumentToken {
     Break,
     Worktree,
     CommonDirName,
-    BranchHeadSha,
     Bold,
     ModelId,
     ModelDisplayName,

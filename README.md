@@ -42,7 +42,6 @@ starship-like example:
 | `--current-dir-name` | name of the current working directory |
 | `--project-dir-name` | name of the project root directory |
 | `--branch-name` | current git branch name |
-| `--branch-head-sha` | full commit SHA of HEAD |
 | `--worktree` | prints "worktree" if inside a git worktree, nothing otherwise |
 | `--common-dir-name` | name of the directory containing the git common directory, i.e. the main repository name even inside a worktree |
 | `--model-id` | model identifier (e.g. `claude-opus-4-6`) |

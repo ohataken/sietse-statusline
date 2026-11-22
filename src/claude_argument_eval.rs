@@ -37,12 +37,6 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
         .map(|h| h.shorthand().unwrap_or("HEAD").to_string())
         .unwrap_or_default();
 
-    let branch_head_sha = head
-        .as_ref()
-        .and_then(|h| h.target())
-        .map(|oid| oid.to_string())
-        .unwrap_or_default();
-
     for token in &tokens {
         match token {
             ClaudeArgumentToken::ProjectDirName => print!("{}", project_dir_name),
@@ -77,7 +71,6 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
                 }
             }
             ClaudeArgumentToken::CommonDirName => print!("{}", common_dir_name),
-            ClaudeArgumentToken::BranchHeadSha => print!("{}", branch_head_sha),
             ClaudeArgumentToken::ModelId => print!("{}", payload.model.id),
             ClaudeArgumentToken::ModelDisplayName => print!("{}", payload.model.display_name),
             ClaudeArgumentToken::SessionId => print!("{}", payload.session_id),
