@@ -25,7 +25,6 @@ pub enum ClaudeArgumentToken {
     Underscore,
     Break,
     Worktree,
-    CommonDirName,
     Bold,
     ModelId,
     ModelDisplayName,
