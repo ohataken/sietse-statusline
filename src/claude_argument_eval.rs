@@ -20,8 +20,6 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
         .and_then(|n| n.to_str())
         .unwrap_or("");
 
-    let repo = git2::Repository::discover(&payload.workspace.current_dir).ok();
-
     for token in &tokens {
         match token {
             ClaudeArgumentToken::ProjectDir => print!("{}", payload.workspace.project_dir),
