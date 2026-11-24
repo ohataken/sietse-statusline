@@ -3,6 +3,7 @@ use crate::claude_argument_token::ClaudeArgumentToken;
 pub fn parse(args: &[String]) -> Vec<ClaudeArgumentToken> {
     args.iter()
         .map(|arg| match arg.as_str() {
+            "--current-dir" => ClaudeArgumentToken::CurrentDir,
             "--current-dir-name" => ClaudeArgumentToken::CurrentDirName,
             "--project-dir-name" => ClaudeArgumentToken::ProjectDirName,
             "--black" => ClaudeArgumentToken::Black,

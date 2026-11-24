@@ -1,4 +1,5 @@
 pub enum ClaudeArgumentToken {
+    CurrentDir,
     CurrentDirName,
     ProjectDirName,
     Black,

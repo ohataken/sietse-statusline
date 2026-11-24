@@ -25,6 +25,7 @@ pub fn eval(payload: &StatuslinePayload, tokens: Vec<ClaudeArgumentToken>) {
     for token in &tokens {
         match token {
             ClaudeArgumentToken::ProjectDirName => print!("{}", project_dir_name),
+            ClaudeArgumentToken::CurrentDir => print!("{}", payload.workspace.current_dir),
             ClaudeArgumentToken::CurrentDirName => print!("{}", current_dir_name),
             ClaudeArgumentToken::Black => print!("\x1b[30m"),
             ClaudeArgumentToken::Red => print!("\x1b[31m"),
